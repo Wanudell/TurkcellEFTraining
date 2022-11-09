@@ -43,8 +43,21 @@ namespace MyAspNetCoreApp.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet] //Bize sayfayı getirmeye ve veriyi getirmeye yarıyor.
         public IActionResult Add()
         {
+            return View();
+        }
+
+        [HttpPost] //Sayfadan gelen veriyi database'e göndermemizi sağlıyor.
+        public IActionResult AddProduct()
+        {
+            //1. YÖNTEM = HTTPContext'in Request propertysi sayesinde HttpContext'te olan bütün request'leri alabiliriz.
+            var name = HttpContext.Request.Form["Name"];
+            var price = HttpContext.Request.Form["Price"];
+            var stock = HttpContext.Request.Form["Stock"];
+            var color = HttpContext.Request.Form["Color"];
+
             return View();
         }
 

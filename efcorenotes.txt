@@ -77,3 +77,15 @@ private readonly AppDbContext dbContext diyoruz. oluþturduktan sonra ctor'da da 
 { this.dbContext = dbContext } yazýyoruz. Bu sayede hiç new anahtar sözcüðü kullanmak zorunda kalmýyorum. Buna Dependency Injection deniyor. 
 
 Eðer ki projede propertyleri geniþletmek istersek DataFirst yaklaþým olduðu için önce database tarafýnda geliþtirmeyi yapýyoruz ardýndan koda döküyoruz.
+
+4 çeþit migration komutu vardýr. Code First yaklaþýmýnda code önce yazýlýr ardýndan migration atýlýr ve sonrasýnda database güncellenir. 
+Migration kodlarý => add-migration initial , update-database , remove-migration, script-migration
+Add-migration "mantýklý_bir_isim" olarak migration eklenmeli. Yapýlan iþlemin belirtilmesi yapýlacak iþlemleri anlamaya yarar saðlar.
+Veri tabanýna yansýtýlan migration remove-migration komutu ile silinir.
+Veri tabanýna uygulanmýþ olan migration'larý geri almak için update-database "Migration_Name" olarak yapabiliriz. Hangi Migration'ý geri almak istiyor isek onun adýný yazarýz.
+Ardýndan migration belirtilen migration'a geri dönecek ve sonrasýnda olan migration remove-migration "Migration_Name" yazýlarak silinebilir.
+Script-Migration => Migration yaptýðýmýzda SQL Server tarafýnda çalýþtýrýlabilecek bir Script dosyasý oluþturur ve böylece bu kodlarý SQL Server'da kullanarak manuel migration yapabiliriz.
+
+																			--- MODEL BINDING ---
+
+Backend'de textbox'da veriyi yakalamak için name="" attribute'unu id'i ise JavaScript'de veriyi yakalamak için kullanýyoruz.
