@@ -1,0 +1,79 @@
+Hafif, geniþletilebilir ve open-source olan veri eriþim teknolojisidir. Veriye eriþmekte kolaylýklar saðlýyor.
+EF Core gibi veri eriþim teknolojilerine ORM denir. ORM = Object-Relational Mapping = Nesne iliþkili map'leme olayý.
+ORM denilince veri eriþim teknolojisi yani nesne mapleme olayý gelsin aklýmýza.
+Nesne mapleme olayý veri tabanýndaki ilgili tablolarýmýza karþýlýk kod tarafýnda bir class ile karþýlamaktýr.
+Sorgularýmýzý Linq sorgularý ile yapýyoruz. Linq = Language Integrated Query
+LINQ to Objects Collection = yani memoride bulunan veriye.
+LINQ to XML = XML dosyalarýna karþý sorgulama yazma.
+LINQ to Entities = Veri tabanýnda tablo olarak karþýlýðý olan class'lara atýlan sorgulardýr.
+
+Hypernet de dapper'da veri eriþim teknolojisidir. EF Core daha yaygýn kullanýlýr.
+
+context = database'e karþýlýk gelir.
+User ise entity'nin DbSet'ine karþýlýk gelir.
+
+var users = context.Users.ToList(); örnek kod.
+
+EF Core bize tablomuzdaki her bir sütun için tablo ismine ait bir class ve sütunlar için propertyler oluþturmamýzý hedefler.
+Böylece tablodaki her bir verinin bir karþýlýðý olur.
+
+Entity Class'ý mutlaka veri tabanýndaki tablolarda bir karþýlýðý olduðunu gösterir. Ýþte bu da nesne iliþkili maplemeye en güzel örnektir.
+
+EF CORE AVANTAJLARI :
+
+1) Veritabaný ile tip güvenli bir þekilde çalýþmamýza imkan saðlar.
+2) Veritabaný ile ilgili tüm süreçleri soyutlar.
+3) Kodun okunabilirliðini saðlýyor.
+4) Kodun sürdürülebilir olmasýna imkan saðlar.
+( Query ile sorgulama yapýlmýþ olsaydý Entity'de yapýlmýþ herhangi bir deðiþiklik sonucunda query'i de deðiþtirmek gerekirdi ama EF Core
+gibi ORM araçlarý bu durumu iyileþtirmektedir. )
+5) Uygulama geliþtirme süresini azaltýr.
+6) SQL injection gibi zafiyetlere karþý doðal korumasý olmasý. 
+(Text tarafýnda bütün datalarý silmeyi saðlayan sql cümleciði yazýlmasýna engel olur.)
+7) Veritabaný ile ilgili tüm iþlemlerinizi kod içerisinden yapmanýza imkan verir. Tek bir yerden veritabanýný yönetmeye imkan saðlar.
+
+EF CORE DEZAVANTAJLARI :
+
+1) Veritabaný ile ilgili tüm süreci soyutladýðýndan dolayý biraz yavaþtýr. Yani performans ister. Sebebi kodlarýn her birinin çalýþmasý.
+2) EF Core tarafýndan oluþturulan query'lere %100 müdahale edemeyiz.Eðer %100 müdahale etmek istersek EF Core ile sql sorgularý yazýlabilir.
+
+				--- KOD YAKLAÞIMLARI ---
+
+EF CORE DATABASE FIRST :
+
+- Uygulama oluþturulurken önce DataBase oluþturulur. 
+- Sonra veri tabanýndaki objelere karþýlýk C# kodlarý yazýlmaya baþlanýr.
+
+DbContext = DB'deki Veritabanýna karþýlýk gelir.
+Table = Entity'lere karþýlýk gelir.
+
+EF CORE CODE FIRST :
+
+- Ýlk önce proje oluþturulur. Veri tabanýna karþýlýk gelecek dbcontext class ve class içerisinde entity'ler oluþturulur. Bunlar veri tabanýnda
+tabloya karþýlýk gelecek.
+- Sonra veri tabanýnda benim projemdeki verilerin iþlenmesi için Migration Tool kullanýlýr.
+
+NOT: Uygulamalarda best practice olarak Code First çalýþmaktýr. 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+EF CORE KULLANIRKEN ÝNDÝRMEMÝZ GEREKEN PACKAGE'LAR :
+
+1) Microsoft.EntityFrameworkCore
+2) Microsoft.EntityFrameworkCore.SqlServer
+3) Microsoft.EntityFrameworkCore.SqlServer.Design
+4) Microsoft.EntityFrameworkCore.Tools
+
+													--- DATABASE FIRST YAKLAÞIMI ---
+
+View'den Sql Server Object Explorer'a girip yeni sql connection oluþturup ardýndan sað týklayýp properties diyip connectionstring alýndý.
+Ardýndan bu connectionstring appsettings.json'a connectionstring olarak eklendi.
+Veri tabanýna karþýlýk gelecek dbContext sýnýfýmýzý oluþturuyoruz. Model katmanýna class ekliyoruz. Adýný dbContext'de verebiliriz ama farklý bir isim veriyoruz. Devamý kodda.
+
+Program.cs'de sql connectionString'ini de verdikten sonra artýk memory'den deðil de database üzerinden veri alýþ veriþi yapmak için istediðim controller'a gelip ;
+
+private readonly AppDbContext dbContext diyoruz. oluþturduktan sonra ctor'da da parantez içine AppDbContext dbContext veriyoruz parametre olarak. Ardýndan da süslü parantez içlerine
+
+{ this.dbContext = dbContext } yazýyoruz. Bu sayede hiç new anahtar sözcüðü kullanmak zorunda kalmýyorum. Buna Dependency Injection deniyor. 
+
+Eðer ki projede propertyleri geniþletmek istersek DataFirst yaklaþým olduðu için önce database tarafýnda geliþtirmeyi yapýyoruz ardýndan koda döküyoruz.
